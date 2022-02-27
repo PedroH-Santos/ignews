@@ -16,7 +16,13 @@ interface PostPreviewProps {
         updated: string,
     }
 }
-
+interface ResponsePrismic {
+    content: {
+        type: string,
+        text: string
+    }[],
+    title: string,
+}
 export default function PostPreview({ post }: PostPreviewProps) {
     
     const {data: session, status} = useSession();
@@ -68,7 +74,7 @@ export const getStaticProps: GetStaticProps = async ({params }) => {
 
     const prismic = getPrismicClient();
 
-    const response = await prismic.getByUID('publication', String(slug), {});
+    const response = await prismic.getByUID<ResponsePrismic>('publication', String(slug), {});
 
     const post = {
         slug,
